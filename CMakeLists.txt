@@ -12,12 +12,14 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 
 add_executable(reporter src/get_metrics.cpp)
-ament_target_dependencies(reporter rclcpp std_msgs)
+ament_target_dependencies(reporter rclcpp std_msgs sensor_msgs)
 
 install(TARGETS
 	reporter
+	DESTINATION lib/${PROJECT_NAME}
 )
 
 ament_package()

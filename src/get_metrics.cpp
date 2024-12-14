@@ -13,6 +13,7 @@
 #include <memory>
 
 #include "rclcpp/rclcpp.hpp"
+#include "sensor_msgs/msg/battery_state.hpp"
 #include "std_msgs/msg/string.hpp"
 
 using std::placeholders::_1;
@@ -20,16 +21,17 @@ using std::placeholders::_1;
 class get_metrics : public rclcpp::Node {
 public:
   get_metrics() : Node("get_metrics") {
-    rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
+    rclcpp::Subscription<sensor_msgs::msg::BatteryState>::SharedPtr
+        subscription_;
 
-    subscription_ = this->create_subscription<std_msgs::msg::String>(
+    subscription_ = this->create_subscription<sensor_msgs::msg::BatteryState>(
         "/battery_state", 10,
         std::bind(&get_metrics::topic_callback, this, _1));
   }
 
 private:
-  void topic_callback(const std_msgs::msg::String &msg) const {
-    RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg.data.c_str());
+  void topic_callback(const sensor_msgs::msg::BatteryState &msg) const {
+    RCLCPP_INFO(this->get_logger(), "Battery percentage: '%f'", msg.percentage);
   }
 };
 
